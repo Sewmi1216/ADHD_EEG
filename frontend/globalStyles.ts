@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import UserProfile from './src/components/UserProfile';
 
 const globalStyles = StyleSheet.create({
@@ -100,7 +100,49 @@ const globalStyles = StyleSheet.create({
         color: 'black', 
         fontFamily: 'poppins-regular',
         paddingLeft: 20
-      }
+      },
+      
+      headerBackContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: -4,
+        gap: 12,
+      },
+      
+      statusContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 16,
+      },
+      
+      statusLabel: {
+        fontSize: 16,
+        marginRight: 12,
+        fontFamily: 'YourFont-Regular',
+      },
+      
+      statusBadge: {
+        paddingHorizontal: 16,
+        paddingVertical: 6,
+        borderRadius: 16,
+      },
+      
+      statusText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 14,
+      },
+      
+      chartWrapper: {
+        marginTop: 24,
+        alignItems: 'center',
+      },
+      
+      chart: {
+        borderRadius: 16,
+        marginVertical: 8,
+      },
+      
 });
 
 export default globalStyles;
