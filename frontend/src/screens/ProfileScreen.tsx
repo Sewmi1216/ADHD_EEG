@@ -58,7 +58,7 @@ const ProfileScreen: React.FC<Props> = ({ route, navigation }) => {
 
   // WebSocket connection
   useEffect(() => {
-    ws.current = new WebSocket('ws://192.168.91.250:8765');
+    ws.current = new WebSocket('ws://192.168.24.250:8765');
     
     ws.current.onmessage = (e) => {
       try {
