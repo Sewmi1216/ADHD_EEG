@@ -7,6 +7,7 @@ import globalStyles from '../../globalStyles';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/Navigator';
+import { Audio } from 'expo-av';
 
 const chartConfig = {
   backgroundColor: '#ffffff',
@@ -20,8 +21,12 @@ const chartConfig = {
   },
   propsForDots: {
     r: '3',
-    strokeWidth: '1',
+    strokeWidth: '5',
     stroke: '#3F51B5',
+  },
+  propsForBackgroundLines: {
+    strokeDasharray: '', // Dotted lines
+    stroke: '#999999',
   },
 };
 
@@ -40,10 +45,12 @@ type Props = {
 };
 
 const ProfileScreen: React.FC<Props> = ({ route, navigation }) => {
-  const { name, borderColor } = route.params;
+  const { name, borderColor, child_id, isEnabled } = route.params;
   const [data, setData] = useState<AttentionDataPoint[]>([]);
   const [currentLevel, setCurrentLevel] = useState<AttentionLevel>('Mid');
+  const [prevLevel, setPrevLevel] = useState<AttentionLevel>('Mid');
   const ws = useRef<WebSocket | null>(null);
+  const soundRef = useRef<any>(null);
   const maxDataPoints = 60;
 
   // Convert attention level to numeric value for the chart
@@ -56,33 +63,70 @@ const ProfileScreen: React.FC<Props> = ({ route, navigation }) => {
     }
   };
 
-  // WebSocket connection
-  useEffect(() => {
-    ws.current = new WebSocket('ws://192.168.24.250:8765');
-    
-    ws.current.onmessage = (e) => {
-      try {
-        const response = JSON.parse(e.data);
-        if (response.attention_level) {
-          const newPoint: AttentionDataPoint = {
-            time: response.time || `${response.window * 5 - 5}-${response.window * 5}s`,
-            level: response.attention_level,
-            value: levelToValue(response.attention_level),
-            window: response.window
-          };
-          
-          setData(prev => {
-            const newData = [...prev, newPoint];
-            // Limit the number of data points to prevent performance issues
-            return newData.slice(-maxDataPoints);
-          });
-          
-          setCurrentLevel(response.attention_level);
+ // Import sound (you'll need to install expo-av)
+ useEffect(() => {
+  const loadSound = async () => {
+    try {
+      const { sound } = await Audio.Sound.createAsync(
+        require('../../assets/sounds/alert1.mp3')
+      );
+      soundRef.current = sound;
+    } catch (error) {
+      console.error('Error loading sound:', error);
+    }
+  };
+
+  loadSound();
+
+  return () => {
+    if (soundRef.current) {
+      soundRef.current.unloadAsync();
+    }
+  };
+}, []);
+
+// WebSocket connection with sound alert
+useEffect(() => {
+  ws.current = new WebSocket('ws://192.168.50.250:8765');
+  
+  ws.current.onopen = () => {
+    console.log('WebSocket connected');
+    const initPayload = JSON.stringify({ child_id });
+    ws.current?.send(initPayload);
+  };
+
+  ws.current.onmessage = async (e) => {
+    try {
+      const response = JSON.parse(e.data);
+      if (response.attention_level) {
+        const newPoint: AttentionDataPoint = {
+          time: response.time || `${response.window * 5 - 5}-${response.window * 5}s`,
+          level: response.attention_level,
+          value: levelToValue(response.attention_level),
+          window: response.window
+        };
+        
+        setData(prev => {
+          const newData = [...prev, newPoint];
+          return newData.slice(-maxDataPoints);
+        });
+        
+        if (response.attention_level === 'Low' && prevLevel !== 'Low' && isEnabled && soundRef.current) {
+        try {
+          await soundRef.current.replayAsync();
+        } catch (error) {
+          console.error('Error playing sound:', error);
         }
-      } catch (error) {
-        console.error('Error parsing WebSocket data:', error);
       }
-    };
+        
+        setPrevLevel(currentLevel);
+        setCurrentLevel(response.attention_level);
+      }
+    } catch (error) {
+      console.error('Error parsing WebSocket data:', error);
+    }
+  };
+
     
     ws.current.onerror = (e) => {
       console.error('WebSocket error:', e);
@@ -97,7 +141,7 @@ const ProfileScreen: React.FC<Props> = ({ route, navigation }) => {
         ws.current.close();
       }
     };
-  }, []);
+  }, [isEnabled]);
 
   // Style functions
   const getLevelColor = (level: AttentionLevel): string => {
@@ -185,6 +229,7 @@ const ProfileScreen: React.FC<Props> = ({ route, navigation }) => {
           borderRadius: 16,
         }}
       />
+      
              {/* X-axis label */}
             <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 12 }}>
               Time (seconds)

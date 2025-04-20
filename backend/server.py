@@ -6,7 +6,6 @@ import joblib
 import pywt
 
 # --- Config ---
-segment_path = "participant_4/segment_1.npy"
 scaler_path = "model/KmeansScaler.pkl"
 model_path = "model/Kmeans_Model.pkl"
 
@@ -73,6 +72,21 @@ async def handle_connection(websocket):
     print("Client connected")
 
     try:
+         # Wait for the initial message containing the child_id
+        init_msg = await websocket.recv()
+        data = json.loads(init_msg)
+
+        if "child_id" not in data:
+            await websocket.send(json.dumps({"error": "Missing child_id"}))
+            return
+
+        child_id = data["child_id"]
+        print(f"Received child_id: {child_id}")
+        
+        # Load child-specific EEG segment
+        segment_path = f"participant_4/segment_{child_id}.npy"
+
+
         eeg_data = np.load(segment_path)
         features = extract_features(eeg_data)
         
@@ -108,8 +122,8 @@ async def handle_connection(websocket):
 
 # --- Start Server ---
 async def main():
-    server = await websockets.serve(handle_connection, "192.168.108.250", 8765)
-    print("WebSocket server started at ws://192.168.108.250:8765")
+    server = await websockets.serve(handle_connection, "192.168.50.250", 8765)
+    print("WebSocket server started at ws://192.168.50.250:8765")
     await server.wait_closed()
 
 if __name__ == "__main__":

@@ -17,16 +17,16 @@ interface HomeScreenProps {
 
 // Define the user data with images, names, and border colors
 const users = [
-  { image: image01, name: 'Nethuli Sahasnaaa', borderColor: 'red' },
-  { image: image06, name: 'Inuli Nihinsa', borderColor: 'green' },
-  { image: image07, name: 'Shehan Tharusha', borderColor: '#FFBF00' },
-  { image: image02, name: 'Sarala Nethmini', borderColor: 'red' },
-  { image: image08, name: 'Amanda Dulsara', borderColor: 'green' },
-  { image: image09, name: 'Randima Perera', borderColor: 'green' },
-  { image: image10, name: 'Senil Kumarasiri', borderColor: '#FFBF00' },
-  { image: image03, name: 'Ovindu Pathirana', borderColor: 'green' },
-  { image: image04, name: 'Ama Fernando', borderColor: 'red' },
-  { image: image05, name: 'Nimeth Nimsara', borderColor: 'red' },
+  { child_id: 1, image: image01, name: 'Nethuli Sahasna', borderColor: 'red' },
+  { child_id: 2, image: image06, name: 'Inuli Nihinsa', borderColor: 'green' },
+  { child_id: 3, image: image07, name: 'Shehan Tharusha', borderColor: '#FFBF00' },
+  { child_id: 4, image: image02, name: 'Sarala Nethmini', borderColor: 'red' },
+  { child_id: 5, image: image08, name: 'Amanda Dulsara', borderColor: 'green' },
+  { child_id: 6, image: image09, name: 'Randima Perera', borderColor: 'green' },
+  { child_id: 7, image: image10, name: 'Senil Kumarasiri', borderColor: '#FFBF00' },
+  { child_id: 8, image: image03, name: 'Ovindu Pathirana', borderColor: 'green' },
+  { child_id: 9, image: image04, name: 'Ama Fernando', borderColor: 'red' },
+  { child_id: 10, image: image05, name: 'Nimeth Nimsara', borderColor: 'red' },
 ];
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
@@ -71,6 +71,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                     navigation.navigate('Profile', {
                       name: profile.name, 
                       borderColor: profile.borderColor, // Pass borderColor
+                      child_id: profile.child_id,
+                      isEnabled: isEnabled,
                     })
                   } 
                 />
@@ -89,6 +91,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                   imageSource={user.image}
                   name={user.name}
                   borderColor={user.borderColor}
+                  child_id={user.child_id}
+                  isEnabled={isEnabled}
                 />
               ))}
             </ScrollView>
