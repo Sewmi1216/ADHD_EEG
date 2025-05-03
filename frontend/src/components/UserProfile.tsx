@@ -9,17 +9,19 @@ interface UserProfileProps {
   imageSource: any;
   name: string;
   borderColor: string;
+  child_id:number;
+  isEnabled:boolean;
 }
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Profile'>;
 
-const UserProfile: React.FC<UserProfileProps> = ({ imageSource, name, borderColor }) => {
+const UserProfile: React.FC<UserProfileProps> = ({ imageSource, name, borderColor, child_id, isEnabled}) => {
   const navigation = useNavigation<NavigationProp>();
 
   return (
     <TouchableOpacity
       style={[globalStyles.userProfile, { marginBottom: 10 }]}
-      onPress={() => navigation.navigate('Profile', { name, borderColor })}
+      onPress={() => navigation.navigate('Profile', { name, borderColor, child_id, isEnabled})}
     >
       <View
         style={[
