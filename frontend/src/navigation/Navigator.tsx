@@ -5,7 +5,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 
 export type RootStackParamList = {
     Home: undefined;
-    Profile: { name: string; borderColor: string; child_id: number, isEnabled: boolean;};
+    Profile: { name: string; borderColor: string; child_id: number; isEnabled: boolean;};
   };
   
 const RootStack = createStackNavigator<RootStackParamList>();

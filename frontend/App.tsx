@@ -1,14 +1,17 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import FontLoader from './src/components/FontLoader';
-import Navigator from './src/navigation/Navigator';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import FontLoader from "./src/components/FontLoader";
+import { WebSocketProvider } from "./src/screens/WebSocketContext";
+import Navigator from "./src/navigation/Navigator";
 
 const App: React.FC = () => {
   return (
     <FontLoader>
-      <NavigationContainer>
-        <Navigator />
-      </NavigationContainer>
+      <WebSocketProvider>
+        <NavigationContainer>
+          <Navigator />
+        </NavigationContainer>
+      </WebSocketProvider>
     </FontLoader>
   );
 };

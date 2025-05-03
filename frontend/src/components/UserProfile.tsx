@@ -15,7 +15,7 @@ interface UserProfileProps {
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Profile'>;
 
-const UserProfile: React.FC<UserProfileProps> = ({ imageSource, name, borderColor, child_id, isEnabled }) => {
+const UserProfile: React.FC<UserProfileProps> = ({ imageSource, name, borderColor, child_id, isEnabled}) => {
   const navigation = useNavigation<NavigationProp>();
 
   return (
