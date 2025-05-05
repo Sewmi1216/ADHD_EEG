@@ -63,19 +63,19 @@ Follow the steps below to set up both.
 
 ---
 ### 🟦 Backend Setup (Python - WebSocket Server for EEG Processing & ML)
-### 1. **Clone the repository:**
+1. **Clone the repository**
 
 ```bash
 git clone https://github.com/Sewmi1216/ADHD_EEG
 cd ADHD_EEG/backend
 ```
-2. **Create and Activate Virtual Environment:**
+2. **Create and Activate Virtual Environment**
 
 ```bash
 python -m venv venv
 ```
 
-3. **Install dependencies:**
+3. **Install dependencies**
 
 ```bash
 pip install -r requirements.txt
