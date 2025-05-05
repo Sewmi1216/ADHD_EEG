@@ -126,7 +126,7 @@ The available data is preprocessed with the following steps applied by the datas
    * Baseline correction
    * Epoch segmentation (1.5s trials)
      
-For our analysis, out of the 56 EEG channels, we selected most relevant 15 channels.
+For our analysis, out of the 56 EEG channels, we selected the most relevant 15 channels.
 
 2. **Feature Extraction**
 
