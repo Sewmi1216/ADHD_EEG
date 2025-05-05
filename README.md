@@ -56,27 +56,32 @@ ADHD_EEG/
 
 This project has **two main parts**:
 
-* 🟦 **Backend**: Python-based machine learning and EEG processing
+* 🟦 **Backend**: Python-based WebSocket Server for EEG Processing & ML
 * 🟩 **Frontend**: React Native mobile app for real-time attention monitoring
 
 Follow the steps below to set up both.
 
 ---
-### 🟦 Backend Setup (Python - EEG Processing & ML)
+### 🟦 Backend Setup (Python - WebSocket Server for EEG Processing & ML)
 ### 1. **Clone the repository:**
 
 ```bash
 git clone https://github.com/Sewmi1216/ADHD_EEG
 cd ADHD_EEG/backend
 ```
+2. **Create and Activate Virtual Environment:**
 
-2. **Install dependencies:**
+```bash
+python -m venv venv
+```
+
+3. **Install dependencies:**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Start Backend Server
+4. Start Backend Server
 
 ```bash
 python app.py
@@ -111,17 +116,23 @@ The analysis workflow consists of the following key steps:
 
 1. **Preprocessing**
 
+✅ Note: Basic preprocessing is already performed in the public dataset.
+
+The available data is preprocessed with the following steps applied by the dataset providers:
+
    * Bandpass filtering (0.5–20 Hz)
    * ICA-based artifact removal
    * Downsampling to 256 Hz
    * Baseline correction
    * Epoch segmentation (1.5s trials)
+     
+For our analysis, out of the 56 EEG channels, we selected most relevant 15 channels.
 
 2. **Feature Extraction**
 
    * Relative power in Delta, Theta, Alpha, and Beta bands
    * Theta-Beta Ratio (TBR), Theta-Alpha Ratio (TAR), Theta-Beta-Alpha Ratio (TBAR)
-   * ERP features (e.g., P300)
+   * ERP features (e.g., P3, P1, N1)
 
 3. **Modeling**
 
@@ -131,7 +142,7 @@ The analysis workflow consists of the following key steps:
 4. **Interpretation**
 
    * Clusters interpreted as high, medium, and low attention levels
-   * Comparison across control, ADD, and ADHD groups
+   * Comparison across control and ADHD groups
 
 ---
 
