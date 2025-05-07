@@ -15,10 +15,10 @@ const chartConfig = {
   backgroundGradientFrom: "#ffffff",
   backgroundGradientTo: "#ffffff",
   decimalPlaces: 0,
-  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+  color: () => "#1665d0",
   labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
   style: {
-    borderRadius: 16,
+    borderRadius: 10,
   },
   propsForDots: {
     r: "3",
@@ -155,7 +155,6 @@ const ProfileScreen: React.FC<Props> = ({ route, navigation }) => {
     datasets: [
       {
         data: data.length > 0 ? data.map((point) => point.value) : [1],
-        color: (opacity = 1) => `rgba(63, 81, 181, ${opacity})`,
         strokeWidth: 2,
       },
     ],
